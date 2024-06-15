@@ -1,9 +1,15 @@
+import Hero from "@/Components/hero";
 import React from "react";
+import PerformanceImg from "../../../public/performance.jpg";
 
 const Performance = () => {
   return (
     <div>
-      <div>Performance page</div>
+      <Hero
+        imgData={PerformanceImg}
+        imgAlt="PerformanceImg image"
+        title="Professional Cloud Hosting"
+      />
     </div>
   );
 };
