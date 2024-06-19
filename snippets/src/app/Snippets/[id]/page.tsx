@@ -1,6 +1,7 @@
 import { db } from "@/db";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import * as actions from "@/actions/index";
 
 interface showSnippetProps {
   params: {
@@ -31,7 +32,9 @@ export default async function snippetShowPage(props: showSnippetProps) {
           >
             Edit
           </Link>
-          <button className="p-2 border-rounded">Delete</button>
+          <form action={actions.deleteSnippet.bind(null, snippet.id)}>
+            <button className="p-2 border-rounded">Delete</button>
+          </form>
         </div>
       </div>
       <pre className="p-3 border rounded bg-gray-200 border-gray-200">
