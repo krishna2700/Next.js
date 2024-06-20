@@ -44,7 +44,7 @@ export async function createSnippet(
         message: "Code must be longer",
       };
     }
-    // // Create a new record in the database
+    // Create a new record in the database
     await db.snippet.create({
       data: {
         title,
