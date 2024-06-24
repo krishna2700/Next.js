@@ -18,7 +18,6 @@ export default async function snippetShowPage(props: showSnippetProps) {
     },
   });
 
-  
   if (!snippet) {
     return notFound();
   }
