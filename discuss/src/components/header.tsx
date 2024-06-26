@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import HeaderAuth from "@/components/header-auth";
 import {
   Input,
   Navbar,
@@ -7,11 +7,8 @@ import {
   NavbarItem,
 } from "@nextui-org/react";
 import Link from "next/link";
-import HeaderAuth from "@/components/header-auth";
 
-export default async function Header() {
-  const session = await auth();
-
+export default function Header() {
   return (
     <Navbar className="shadow mb-6">
       <NavbarBrand>
