@@ -1,18 +1,20 @@
-"use server";
+'use server';
 
-import { z } from "zod";
-import { auth } from "@/auth";
-import type { Topic } from "@prisma/client";
-import { redirect } from "next/navigation";
-import { db } from "@/db";
-import paths from "@/paths";
-import { revalidatePath } from "next/cache";
+import type { Topic } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+import { z } from 'zod';
+import { auth } from '@/auth';
+import { db } from '@/db';
+import paths from '@/paths';
 
 const createTopicSchema = z.object({
   name: z
     .string()
     .min(3)
-    .regex(/[a-z-]/, { message: "Must be a lowercase without spaces" }),
+    .regex(/[a-z-]/, {
+      message: 'Must be lowercase letters or dashes without spaces',
+    }),
   description: z.string().min(10),
 });
 
@@ -29,9 +31,10 @@ export async function createTopic(
   formData: FormData
 ): Promise<CreateTopicFormState> {
   const result = createTopicSchema.safeParse({
-    name: formData.get("name"),
-    description: formData.get("description"),
+    name: formData.get('name'),
+    description: formData.get('description'),
   });
+
   if (!result.success) {
     return {
       errors: result.error.flatten().fieldErrors,
@@ -42,7 +45,7 @@ export async function createTopic(
   if (!session || !session.user) {
     return {
       errors: {
-        _form: ["You must be signed in to do this"],
+        _form: ['You must be signed in to do this.'],
       },
     };
   }
@@ -65,11 +68,12 @@ export async function createTopic(
     } else {
       return {
         errors: {
-          _form: ["Something went wrong"],
+          _form: ['Something went wrong'],
         },
       };
     }
   }
-  revalidatePath("/");
+
+  revalidatePath('/');
   redirect(paths.topicShow(topic.slug));
 }
