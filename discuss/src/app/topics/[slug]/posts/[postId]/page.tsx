@@ -1,10 +1,10 @@
+import CommentCreateForm from "@/components/comments/comment-create-form";
+import CommentList from "@/components/comments/comment-list";
+import PostShow from "@/components/posts/post-show";
+import PostShowLoading from "@/components/posts/post-show-loading";
+import paths from "@/paths";
 import Link from "next/link";
 import { Suspense } from "react";
-import PostShow from "@/components/posts/post-show";
-import CommentList from "@/components/comments/comment-list";
-import CommentCreateForm from "@/components/comments/comment-create-form";
-import paths from "@/paths";
-import { fetchCommentsByPostId } from "@/db/queries/comments";
 
 interface PostShowPageProps {
   params: {
@@ -21,7 +21,7 @@ export default async function PostShowPage({ params }: PostShowPageProps) {
       <Link className="underline decoration-solid" href={paths.topicShow(slug)}>
         {"< "}Back to {slug}
       </Link>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<PostShowLoading />}>
         <PostShow postId={postId} />
       </Suspense>
       <CommentCreateForm postId={postId} startOpen />
