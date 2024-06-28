@@ -1,22 +1,23 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { useEffect, useRef } from "react";
-import { Textarea } from "@nextui-org/react";
+import { useEffect, useRef, useState } from "react";
+import { Textarea, Button } from "@nextui-org/react";
 import FormButton from "@/components/common/form-button";
 import * as actions from "@/actions";
 
 interface CommentCreateFormProps {
   postId: string;
   parentId?: string;
-  onCommentCreate?: () => void;
+  startOpen?: boolean;
 }
 
 export default function CommentCreateForm({
   postId,
   parentId,
-  onCommentCreate,
+  startOpen,
 }: CommentCreateFormProps) {
+  const [open, setOpen] = useState(startOpen);
   const ref = useRef<HTMLFormElement | null>(null);
   const [formState, action] = useFormState(
     actions.createComment.bind(null, { postId, parentId }),
@@ -27,13 +28,13 @@ export default function CommentCreateForm({
     if (formState.success) {
       ref.current?.reset();
 
-      if (onCommentCreate) {
-        onCommentCreate();
+      if (!startOpen) {
+        setOpen(false);
       }
     }
-  }, [formState, onCommentCreate]);
+  }, [formState, startOpen]);
 
-  return (
+  const form = (
     <form action={action} ref={ref}>
       <div className="space-y-2 px-1">
         <Textarea
@@ -54,5 +55,14 @@ export default function CommentCreateForm({
         <FormButton>Create Comment</FormButton>
       </div>
     </form>
+  );
+
+  return (
+    <div>
+      <Button size="sm" variant="light" onClick={() => setOpen(!open)}>
+        Reply
+      </Button>
+      {open && form}
+    </div>
   );
 }
