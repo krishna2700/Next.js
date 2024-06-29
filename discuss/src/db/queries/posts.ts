@@ -6,12 +6,24 @@ export type PostWithData = Post & {
   user: { name: string | null };
   _count: { comments: number };
 };
-
 // ? Either above method or below method can be used make sure to comment one and keep
 
 // export type PostWithData = Awaited<
 //   ReturnType<typeof fetchPostsByTopicSlug>
 // >[number];
+
+export function fetchPostsBySearchTerm(term: string): Promise<PostWithData[]> {
+  return db.post.findMany({
+    include: {
+      topic: { select: { slug: true } },
+      user: { select: { name: true, image: true } },
+      _count: { select: { comments: true } },
+    },
+    where: {
+      OR: [{ title: { contains: term } }, { content: { contains: term } }],
+    },
+  });
+}
 
 export function fetchPostsByTopicSlug(slug: string): Promise<PostWithData[]> {
   return db.post.findMany({
